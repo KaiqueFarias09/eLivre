@@ -109,5 +109,5 @@ int _findCentralDirectoryOffset(Uint8List bytes) {
     }
   }
 
-  throw Exception('EOCDR not found in zip file');
+  throw Exception('CDO not found in zip file');
 }
