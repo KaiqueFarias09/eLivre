@@ -1,0 +1,33 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    constant_identifier_names: ignore
+    non_constant_identifier_names: ignore
+    unused_element: error
+    unused_field: error
+    unused_local_variable: error
+  exclude:
+    - test/tests/res/**
+    - test/tests/out/**
+
+linter:
+  rules:
+    - avoid_print
+    - camel_case_types
+    - always_declare_return_types
+    - always_require_non_null_named_parameters
+    - avoid_empty_else
+    - avoid_relative_lib_imports
+    - avoid_returning_null_for_void
+    - prefer_asserts_in_initializer_lists
+    - prefer_const_constructors
+    - prefer_final_fields
+    - unnecessary_null_checks
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
