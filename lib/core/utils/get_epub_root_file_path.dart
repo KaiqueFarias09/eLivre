@@ -5,11 +5,11 @@ import 'package:liber_epub/core/constants/epub_constants.dart'
     as epub_constants;
 import 'package:xml/xml.dart';
 
-Future<String?> getRootFilePath(Archive epubArchive) async {
+Future<String?> getEpubRootFilePath(Archive epubArchive) async {
   final containerFileEntry = _getContainerFileEntry(epubArchive);
-  final containerDocument = XmlDocument.parse(
-    convert.utf8.decode(containerFileEntry.content as List<int>)
-  );
+  final containerDocument = XmlDocument.parse(convert.utf8.decode(
+    containerFileEntry.content as List<int>,
+  ));
 
   final package = _getPackageElement(containerDocument);
   return _getRootFilePath(package);
