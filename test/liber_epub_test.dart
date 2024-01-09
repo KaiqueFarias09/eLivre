@@ -1,43 +1,35 @@
-import 'dart:typed_data';
-
-import 'package:flutter_test/flutter_test.dart';
-import 'package:liber_epub/liber_epub.dart';
+import 'package:liber_epub/liber_ebooks.dart';
+import 'package:test/test.dart';
 
 void main() {
-  test('decompressZip returns correct decompressed data', () async {
-    const path =
-        'test/rsc/Harry_Potter_and_the_Chamber_of_Secrets_Harry_Potter_2.epub';
-    const password = 'password';
+  group("Reader", () {
+    test('should throw exception when path is empty', () async {
+      const path = '';
+      try {
+        await Reader.decompressEpub(path);
+        fail('Exception not thrown');
+      } catch (exception) {
+        expect(exception, isA<Exception>());
+        expect(exception.toString(), 'Exception: Path cannot be empty');
+      }
+    });
 
-    final decompressedData = await Reader.decompressEpub(path, password);
+    test('should throw exception when file does not exist', () async {
+      const path = '/path/to/nonexistent/file.epub';
+      try {
+        await Reader.decompressEpub(path);
+        fail('Exception not thrown');
+      } catch (exception) {
+        expect(exception, isA<Exception>());
+        expect(exception.toString(), 'Exception: No such file or directory');
+      }
+    });
 
-    expect(decompressedData, isA<ByteBuffer>());
-    // TODO: Add more assertions to validate the decompressed data
-  });
-
-  test('decompressZip throws exception when path is empty', () async {
-    const path = '';
-    const password = 'password';
-
-    try {
-      await Reader.decompressEpub(path, password);
-      fail('Expected an exception to be thrown');
-    } catch (e) {
-      expect(e, isException);
-      expect(e.toString(), contains('Path cannot be empty'));
-    }
-  });
-
-  test('decompressZip throws exception when zip file does not exist', () async {
-    const path = '/path/to/nonexistent/file.zip';
-    const password = 'password';
-
-    try {
-      await Reader.decompressEpub(path, password);
-      fail('Expected an exception to be thrown');
-    } catch (e) {
-      expect(e, isException);
-      expect(e.toString(), contains('No such file or directory'));
-    }
+    test('should print the decompressed EPUB archive', () async {
+      const path =
+          'test/rsc/Harry_Potter_and_the_Chamber_of_Secrets_Harry_Potter_2.epub';
+      final result = await Reader.decompressEpub(path);
+      expect(result, isNull);
+    });
   });
 }
