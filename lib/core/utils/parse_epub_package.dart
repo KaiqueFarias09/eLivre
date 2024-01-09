@@ -1,7 +1,7 @@
 import 'package:liber_epub/core/entities/epub_package.dart';
 import 'package:xml/xml.dart';
 
-Package parsePackage(String xmlString) {
+EpubPackage parsePackage(String xmlString) {
   final document = XmlDocument.parse(xmlString);
   final packageElement = document.findElements('package').first;
 
@@ -10,16 +10,23 @@ Package parsePackage(String xmlString) {
   final spineElement = packageElement.findElements('spine').first;
   final guideElement = packageElement.findElements('guide').first;
 
-  final metadata = Metadata(
-    rights: metadataElement.findElements('dc:rights').first.text,
-    contributor: metadataElement.findElements('dc:contributor').first.text,
-    creator: metadataElement.findElements('dc:creator').first.text,
-    publisher: metadataElement.findElements('dc:publisher').first.text,
-    title: metadataElement.findElements('dc:title').first.text,
-    date: metadataElement.findElements('dc:date').first.text,
-    language: metadataElement.findElements('dc:language').first.text,
-  );
+  String getElementText(XmlElement element, String name) {
+    final elements = element.findElements(name);
+    return elements.isEmpty ? '' : elements.first.value ?? '';
+  }
 
+  final metadata = Metadata(
+    rights: getElementText(metadataElement, 'dc:rights'),
+    contributor: getElementText(metadataElement, 'dc:contributor'),
+    creator: getElementText(metadataElement, 'dc:creator'),
+    publisher: getElementText(metadataElement, 'dc:publisher'),
+    title: getElementText(metadataElement, 'dc:title'),
+    date: getElementText(metadataElement, 'dc:date'),
+    language: getElementText(metadataElement, 'dc:language'),
+    subject: getElementText(metadataElement, 'dc:subject'),
+    description: getElementText(metadataElement, 'dc:description'),
+    identifier: getElementText(metadataElement, 'dc:identifier'),
+  );
   final manifest = manifestElement.findElements('item').map((itemElement) {
     return Item(
       href: itemElement.getAttribute('href')!,
@@ -46,7 +53,7 @@ Package parsePackage(String xmlString) {
     }).toList(),
   );
 
-  return Package(
+  return EpubPackage(
     xmlns: packageElement.getAttribute('xmlns')!,
     uniqueIdentifier: packageElement.getAttribute('unique-identifier')!,
     version: packageElement.getAttribute('version')!,

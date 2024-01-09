@@ -1,5 +1,5 @@
-class Package {
-  Package({
+class EpubPackage {
+  EpubPackage({
     required this.xmlns,
     required this.uniqueIdentifier,
     required this.version,
@@ -32,6 +32,9 @@ class Metadata {
     required this.title,
     required this.date,
     required this.language,
+    required this.subject,
+    required this.description,
+    required this.identifier,
   });
 
   String rights;
@@ -41,10 +44,13 @@ class Metadata {
   String title;
   String date;
   String language;
+  String subject;
+  String description;
+  String identifier;
 
   @override
   String toString() {
-    return 'Metadata(rights: $rights, contributor: $contributor, creator: $creator, publisher: $publisher, title: $title, date: $date, language: $language)';
+    return 'Metadata(rights: $rights, contributor: $contributor, creator: $creator, publisher: $publisher, title: $title, date: $date, language: $language, subject: $subject, description: $description, identifier: $identifier)';
   }
 }
 
