@@ -6,38 +6,52 @@ import 'dart:io';
 import 'package:archive/archive.dart';
 import 'package:liber_epub/core/utils/get_epub_root_file_path.dart';
 import 'package:liber_epub/core/utils/parse_epub_package.dart';
+import 'package:liber_epub/core/utils/process_package.dart';
 
 class Reader {
   Future<void> decompressEpub(String path, {String? password}) async {
-    if (path.isEmpty) throw Exception('Path cannot be empty');
-
-    // TODO: Sanitize the path input to avoid possible path traversal attacks
-    final file = File(path);
-    if (!file.existsSync()) throw Exception('No such file or directory');
-
-    final bytes = await file.readAsBytes();
+    final file = _getFileIfValid(path);
+    final bytes = file.readAsBytesSync();
     final archive = ZipDecoder().decodeBytes(bytes);
 
     final rootFilePath = await getEpubRootFilePath(archive);
-    if (rootFilePath == null) {
-      throw Exception('No root file found');
-    }
+    final rootFile = _getRootFile(archive, rootFilePath);
 
-    final rootFile = archive.files.firstWhere(
-      (ArchiveFile testFile) => testFile.name == rootFilePath,
-      orElse: () => throw Exception('EPUB parsing error: root file not found.'),
+    final package = parsePackage(
+      convert.utf8.decode(rootFile.content as List<int>),
     );
-    final rootFileContent = convert.utf8.decode(rootFile.content as List<int>);
-    final package = parsePackage(rootFileContent);
-    print(package.guide);
+    processPackage(package, archive, rootFilePath);
   }
-}
 
-String getDirectoryPath(String filePath) {
-  final lastSlashIndex = filePath.lastIndexOf('/');
-  if (lastSlashIndex == -1) {
-    return '';
-  } else {
-    return filePath.substring(0, lastSlashIndex);
+  File _getFileIfValid(String path) {
+    if (path.isEmpty) throw Exception('Path cannot be empty');
+
+    final filePath = _sanitizePath(path);
+    final file = File(filePath);
+    if (!file.existsSync()) throw Exception('No such file or directory');
+
+    return file;
+  }
+
+  String _sanitizePath(String input) {
+    final Uri uri = Uri.parse(input);
+    List<String> segments = uri.pathSegments;
+    segments = segments
+        .where(
+          (segment) => segment.isNotEmpty && segment != '.' && segment != '..',
+        )
+        .toList();
+
+    return Uri.parse(segments.join('/')).toString();
+  }
+
+  ArchiveFile _getRootFile(Archive archive, String? rootFilePath) {
+    if (rootFilePath == null) throw Exception('No root file found');
+    return archive.files.firstWhere(
+      (testFile) => testFile.name == rootFilePath,
+      orElse: () => throw Exception(
+        'EPUB parsing error: root file not found.',
+      ),
+    );
   }
 }
