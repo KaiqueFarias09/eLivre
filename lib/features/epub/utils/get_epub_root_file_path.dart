@@ -1,11 +1,11 @@
 import 'dart:convert' as convert;
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/core/constants/epub_constants.dart'
+import 'package:liber_epub/features/epub/constants/epub_constants.dart'
     as epub_constants;
 import 'package:xml/xml.dart';
 
-Future<String?> getEpubRootFilePath(Archive epubArchive) async {
+Future<String?> getEpubRootFilePath(final Archive epubArchive) async {
   final containerFileEntry = _getContainerFileEntry(epubArchive);
   final containerDocument = XmlDocument.parse(convert.utf8.decode(
     containerFileEntry.content as List<int>,
@@ -15,9 +15,9 @@ Future<String?> getEpubRootFilePath(Archive epubArchive) async {
   return _getRootFilePath(package);
 }
 
-ArchiveFile _getContainerFileEntry(Archive epubArchive) {
+ArchiveFile _getContainerFileEntry(final Archive epubArchive) {
   return epubArchive.files.firstWhere(
-    (file) => file.name == epub_constants.containerFilepath,
+    (final file) => file.name == epub_constants.containerFilepath,
     orElse: () => throw Exception(
       'EPUB parsing error: ${epub_constants.containerFilepath} '
       'file not found in archive.',
@@ -25,7 +25,7 @@ ArchiveFile _getContainerFileEntry(Archive epubArchive) {
   );
 }
 
-XmlElement _getPackageElement(XmlDocument containerDocument) {
+XmlElement _getPackageElement(final XmlDocument containerDocument) {
   final package = containerDocument
       .findElements(
         'container',
@@ -40,9 +40,10 @@ XmlElement _getPackageElement(XmlDocument containerDocument) {
   return package;
 }
 
-String? _getRootFilePath(XmlElement package) {
+String? _getRootFilePath(final XmlElement package) {
   final rootFileElement = package.descendants.firstWhere(
-    (element) => element is XmlElement && 'rootfile' == element.name.local,
+    (final element) =>
+        element is XmlElement && 'rootfile' == element.name.local,
     orElse: () => throw Exception(
       'EPUB parsing error: rootfile element not found in container file',
     ),

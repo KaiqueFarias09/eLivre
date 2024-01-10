@@ -1,20 +1,24 @@
 import 'dart:convert' as convert;
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/core/entities/epub_navigation.dart';
-import 'package:liber_epub/core/entities/epub_package.dart';
+import 'package:liber_epub/features/epub/entities/epub_navigation.dart';
+import 'package:liber_epub/features/epub/entities/epub_package.dart';
 import 'package:xml/xml.dart';
 
-void processPackage(
-    EpubPackage package, Archive archive, String? rootFilePath) {
+EpubNavigation processPackage(
+  final EpubPackage package,
+  final Archive archive,
+  final String? rootFilePath,
+) {
+  // TODO: Add support for EPUB 3.0
   if (package.version == '2.0') {
     final tocId = package.spine.toc;
     if (tocId.isEmpty) {
       throw Exception('EPUB parsing error: TOC ID is empty.');
     }
 
-    final tocManifestItem = package.manifest.firstWhere(
-      (element) => element.id == tocId,
+    final tocManifestItem = package.manifest.items.firstWhere(
+      (final element) => element.id == tocId,
       orElse: () => throw Exception(
           'EPUB parsing error: TOC item $tocId not found in EPUB manifest.'),
     );
@@ -26,7 +30,7 @@ void processPackage(
     );
 
     final tocFileEntry = archive.files.firstWhere(
-      (file) => file.name.toLowerCase() == tocFileEntryPath.toLowerCase(),
+      (final file) => file.name.toLowerCase() == tocFileEntryPath.toLowerCase(),
       orElse: () => throw Exception(
         'EPUB parsing error: TOC file $tocFileEntryPath not found in archive.',
       ),
@@ -36,15 +40,20 @@ void processPackage(
       convert.utf8.decode(tocFileEntry.content as List<int>),
     );
     final navigationContent = EpubNavigation(document: containerDocument);
-    print(navigationContent.navPoints);
+    return navigationContent;
+  } else {
+    throw Exception('EPUB parsing error: Unsupported EPUB version.');
   }
 }
 
-String _combinePaths(String directory, String fileName) {
+String _combinePaths(
+  final String directory,
+  final String fileName,
+) {
   return directory == '' ? fileName : '$directory/$fileName';
 }
 
-String _getDirectoryPath(String filePath) {
+String _getDirectoryPath(final String filePath) {
   final lastSlashIndex = filePath.lastIndexOf('/');
   return lastSlashIndex == -1 ? '' : filePath.substring(0, lastSlashIndex);
 }

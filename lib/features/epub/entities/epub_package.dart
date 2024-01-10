@@ -13,7 +13,7 @@ class EpubPackage {
   String uniqueIdentifier;
   String version;
   Metadata metadata;
-  List<Item> manifest;
+  Manifest manifest;
   Spine spine;
   Guide guide;
 
@@ -21,6 +21,11 @@ class EpubPackage {
   String toString() {
     return 'Package(xmlns: $xmlns, uniqueIdentifier: $uniqueIdentifier, version: $version, metadata: $metadata, manifest: $manifest, spine: $spine, guide: $guide)';
   }
+}
+
+class Manifest {
+  Manifest({required this.items,});
+  final List<ManifestItem> items;
 }
 
 class Metadata {
@@ -54,8 +59,8 @@ class Metadata {
   }
 }
 
-class Item {
-  Item({
+class ManifestItem {
+  ManifestItem({
     required this.href,
     required this.id,
     required this.mediaType,

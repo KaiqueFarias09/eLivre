@@ -27,7 +27,7 @@ void main() {
 
     test('should succeed', () async {
       const path =
-          'test/rsc/Harry_Potter_and_the_Chamber_of_Secrets_Harry_Potter_2.epub';
+          'test/resources/Harry_Potter_and_the_Chamber_of_Secrets_Harry_Potter_2.epub';
       await Reader().decompressEpub(path);
     });
   });
