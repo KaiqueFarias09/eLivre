@@ -1,21 +1,15 @@
-class EpubPackage {
-  EpubPackage({
-    required this.xmlns,
-    required this.uniqueIdentifier,
-    required this.version,
-    required this.metadata,
-    required this.manifest,
-    required this.spine,
-    required this.guide,
-  });
+import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
 
-  String xmlns;
-  String uniqueIdentifier;
-  String version;
-  Metadata metadata;
-  Manifest manifest;
-  Spine spine;
-  Guide guide;
+class Epub2Package extends EpubPackage {
+  Epub2Package({
+    required super.version,
+    required super.metadata,
+    required super.manifest,
+    required super.spine,
+    required super.guide,
+    required super.uniqueIdentifier,
+    required super.xmlns,
+  });
 
   @override
   String toString() {
@@ -23,35 +17,23 @@ class EpubPackage {
   }
 }
 
-class Manifest {
-  Manifest({required this.items});
-  final List<ManifestItem> items;
+class Epub2Manifest extends BaseManifest {
+  Epub2Manifest({required super.items});
 }
 
-class Metadata {
-  Metadata({
-    required this.rights,
-    required this.contributor,
-    required this.creator,
-    required this.publisher,
-    required this.title,
-    required this.date,
-    required this.language,
-    required this.subject,
-    required this.description,
-    required this.identifier,
+class Epub2Metadata extends BaseMetadata {
+  Epub2Metadata({
+    required super.rights,
+    required super.contributor,
+    required super.creator,
+    required super.publisher,
+    required super.title,
+    required super.date,
+    required super.language,
+    required super.subject,
+    required super.description,
+    required super.identifier,
   });
-
-  String rights;
-  String contributor;
-  String creator;
-  String publisher;
-  String title;
-  String date;
-  String language;
-  String subject;
-  String description;
-  String identifier;
 
   @override
   String toString() {
@@ -61,20 +43,20 @@ class Metadata {
 
 class ManifestItem {
   ManifestItem({
-    required this.href,
+    required this.path,
     required this.id,
     required this.mediaType,
     this.properties = '',
   });
 
-  String href;
+  String path;
   String id;
   String mediaType;
   String properties;
 
   @override
   String toString() {
-    return 'Item(href: $href, id: $id, mediaType: $mediaType)';
+    return 'Item(href: $path, id: $id, mediaType: $mediaType)';
   }
 }
 
