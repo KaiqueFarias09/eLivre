@@ -2,47 +2,44 @@ import 'dart:convert' as convert;
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/features/epub/entities/epub_file_types.dart';
-import 'package:liber_epub/features/epub/entities/epub_files.dart';
-import 'package:liber_epub/features/epub/entities/epub_package.dart';
+import 'package:collection/collection.dart';
+import 'package:liber_epub/features/epub/entities/book/files.dart';
+import 'package:liber_epub/features/epub/entities/file/binary_file.dart';
+import 'package:liber_epub/features/epub/entities/file/text_file.dart';
+import 'package:liber_epub/features/epub/entities/package/epub_2_package.dart';
+import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
 import 'package:path/path.dart' as path;
 
 /// Extracts various files from an EPUB archive.
-class EpubFileExtractor {
-  /// Executes the EPUB file extraction process.
-  ///
-  /// Returns an [EpubFiles] object containing the extracted files.
-  EpubFiles execute(
-    final Archive archive,
-    final EpubPackage package,
-  ) {
-    return EpubFiles(
-      images: _getImages(archive, package),
-      css: _getCSSFiles(archive, package),
-      html: _getHTMLFiles(archive, package),
-      fonts: _getFontFiles(archive, package),
-      others: _getOtherFiles(archive, package),
-    );
-  }
+/// Executes the EPUB file extraction process.
+///
+/// Returns an [Files] object containing the extracted files.
+Files extractFiles(
+  final Archive archive,
+  final EpubPackage package,
+) {
+  return Files(
+    images: _getImages(archive, package),
+    css: _getCSSFiles(archive, package),
+    html: _getHTMLFiles(archive, package),
+    fonts: _getFontFiles(archive, package),
+    others: _getOtherFiles(archive, package),
+  );
 }
 
-List<BinaryEpubFile> _getImages(
+List<BinaryFile> _getImages(
   final Archive archive,
   final EpubPackage package,
 ) {
   final imageItems = package.manifest.items.where(
     (final item) => item.mediaType.contains('image/'),
   );
-
-  final imageFiles = imageItems
-      .map((final item) => archive.findFile(item.href))
-      .where((final file) => file != null)
-      .toList();
+  final imageFiles = _getFilesFromItems(archive, imageItems);
 
   return imageFiles
       .map(
-        (final image) => BinaryEpubFile(
-          name: path.basename(image!.name),
+        (final image) => BinaryFile(
+          name: path.basename(image.name),
           type: image.name.split('.').last,
           path: image.name,
           content: Uint8List.fromList(
@@ -53,34 +50,17 @@ List<BinaryEpubFile> _getImages(
       .toList();
 }
 
-List<TextEpubFile> _getCSSFiles(
+List<TextFile> _getCSSFiles(
   final Archive archive,
   final EpubPackage package,
 ) {
   final cssItems = package.manifest.items.where(
     (final item) => item.mediaType.contains('text/css'),
   );
-  return cssItems.map((final item) {
-    final file = archive.findFile(item.href);
-    return TextEpubFile(
-      path: item.href,
-      content: convert.utf8.decode(file!.content as List<int>),
-      name: path.basename(file.name),
-      type: file.name.split('.').last,
-    );
-  }).toList();
-}
+  final cssFiles = _getFilesFromItems(archive, cssItems);
 
-List<TextEpubFile> _getHTMLFiles(
-  final Archive archive,
-  final EpubPackage package,
-) {
-  final htmlItems = package.manifest.items.where(
-    (final item) => item.mediaType.contains('application/xhtml+xml'),
-  );
-  final htmlFiles = _getFilesFromItems(archive, htmlItems);
-  return htmlFiles.map((final file) {
-    return TextEpubFile(
+  return cssFiles.map((final file) {
+    return TextFile(
       path: file.name,
       content: convert.utf8.decode(file.content as List<int>),
       name: path.basename(file.name),
@@ -89,7 +69,26 @@ List<TextEpubFile> _getHTMLFiles(
   }).toList();
 }
 
-List<BinaryEpubFile> _getFontFiles(
+List<TextFile> _getHTMLFiles(
+  final Archive archive,
+  final EpubPackage package,
+) {
+  final htmlItems = package.manifest.items.where(
+    (final item) => item.mediaType.contains('application/xhtml+xml'),
+  );
+  final htmlFiles = _getFilesFromItems(archive, htmlItems);
+
+  return htmlFiles.map((final file) {
+    return TextFile(
+      path: file.name,
+      content: convert.utf8.decode(file.content as List<int>),
+      name: path.basename(file.name),
+      type: file.name.split('.').last,
+    );
+  }).toList();
+}
+
+List<BinaryFile> _getFontFiles(
   final Archive archive,
   final EpubPackage package,
 ) {
@@ -100,7 +99,7 @@ List<BinaryEpubFile> _getFontFiles(
   );
   final fontFiles = _getFilesFromItems(archive, fontItems);
   return fontFiles.map((final file) {
-    return BinaryEpubFile(
+    return BinaryFile(
       path: file.name,
       content: Uint8List.fromList(file.content as List<int>),
       name: path.basename(file.name),
@@ -109,7 +108,7 @@ List<BinaryEpubFile> _getFontFiles(
   }).toList();
 }
 
-List<BinaryEpubFile> _getOtherFiles(
+List<BinaryFile> _getOtherFiles(
   final Archive archive,
   final EpubPackage package,
 ) {
@@ -123,7 +122,7 @@ List<BinaryEpubFile> _getOtherFiles(
   final files = _getFilesFromItems(archive, otherItems);
   return files.map(
     (final file) {
-      return BinaryEpubFile(
+      return BinaryFile(
         path: file.name,
         content: Uint8List.fromList(file.content as List<int>),
         name: path.basename(file.name),
@@ -137,9 +136,15 @@ List<ArchiveFile> _getFilesFromItems(
   final Archive archive,
   final Iterable<ManifestItem> items,
 ) {
-  return items
-      .map((final item) => archive.findFile(item.href))
-      .where((final file) => file != null)
-      .cast<ArchiveFile>()
-      .toList();
+  final List<ArchiveFile> archiveFiles = [];
+  for (final item in items) {
+    final file = archive.files.firstWhereOrNull(
+      (final file) => file.name.contains(item.path),
+    );
+
+    if (file != null) {
+      archiveFiles.add(file);
+    }
+  }
+  return archiveFiles;
 }
