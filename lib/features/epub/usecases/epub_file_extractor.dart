@@ -44,7 +44,10 @@ List<BinaryEpubFile> _getImages(
         (final image) => BinaryEpubFile(
           name: path.basename(image!.name),
           type: image.name.split('.').last,
-          content: Uint8List.fromList(image.content as List<int>),
+          path: image.name,
+          content: Uint8List.fromList(
+            image.content as List<int>,
+          ),
         ),
       )
       .toList();
@@ -60,6 +63,7 @@ List<TextEpubFile> _getCSSFiles(
   return cssItems.map((final item) {
     final file = archive.findFile(item.href);
     return TextEpubFile(
+      path: item.href,
       content: convert.utf8.decode(file!.content as List<int>),
       name: path.basename(file.name),
       type: file.name.split('.').last,
@@ -77,6 +81,7 @@ List<TextEpubFile> _getHTMLFiles(
   final htmlFiles = _getFilesFromItems(archive, htmlItems);
   return htmlFiles.map((final file) {
     return TextEpubFile(
+      path: file.name,
       content: convert.utf8.decode(file.content as List<int>),
       name: path.basename(file.name),
       type: file.name.split('.').last,
@@ -96,6 +101,7 @@ List<BinaryEpubFile> _getFontFiles(
   final fontFiles = _getFilesFromItems(archive, fontItems);
   return fontFiles.map((final file) {
     return BinaryEpubFile(
+      path: file.name,
       content: Uint8List.fromList(file.content as List<int>),
       name: path.basename(file.name),
       type: file.name.split('.').last,
@@ -118,6 +124,7 @@ List<BinaryEpubFile> _getOtherFiles(
   return files.map(
     (final file) {
       return BinaryEpubFile(
+        path: file.name,
         content: Uint8List.fromList(file.content as List<int>),
         name: path.basename(file.name),
         type: file.name.split('.').last,
