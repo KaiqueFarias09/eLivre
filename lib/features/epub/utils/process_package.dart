@@ -5,7 +5,7 @@ import 'package:liber_epub/features/epub/entities/epub_navigation.dart';
 import 'package:liber_epub/features/epub/entities/epub_package.dart';
 import 'package:xml/xml.dart';
 
-EpubNavigation processPackage(
+EpubNavigation getEpubNavigation(
   final EpubPackage package,
   final Archive archive,
   final String? rootFilePath,
