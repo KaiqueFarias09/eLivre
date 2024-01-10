@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:liber_epub/features/epub/usecases/epub_file_extractor.dart';
+import 'package:liber_epub/features/epub/utils/get_book_cover.dart';
 import 'package:liber_epub/features/epub/utils/get_epub_root_file_path.dart';
 import 'package:liber_epub/features/epub/utils/parse_epub_package.dart';
 import 'package:liber_epub/features/epub/utils/process_package.dart';
@@ -24,10 +25,13 @@ class Reader {
     final package = parsePackage(
       convert.utf8.decode(rootFile.content as List<int>),
     );
-    processPackage(package, archive, rootFilePath);
+    final navigation = getEpubNavigation(package, archive, rootFilePath);
+    print(navigation);
 
     final files = EpubFileExtractor().execute(archive, package);
-    print(files);
+    final bookCover = getBookCover(package.manifest.items, files.images);
+
+    print({bookCover.name, bookCover.path, bookCover.type});
   }
 
   File _getFileIfValid(final String path) {
