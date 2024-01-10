@@ -17,7 +17,7 @@ Future<String?> getEpubRootFilePath(final Archive epubArchive) async {
 
 ArchiveFile _getContainerFileEntry(final Archive epubArchive) {
   return epubArchive.files.firstWhere(
-    (final file) => file.name == epub_constants.containerFilepath,
+    (final file) => file.name.contains(epub_constants.containerFilepath),
     orElse: () => throw Exception(
       'EPUB parsing error: ${epub_constants.containerFilepath} '
       'file not found in archive.',

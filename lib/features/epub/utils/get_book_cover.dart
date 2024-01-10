@@ -1,11 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:liber_epub/features/epub/entities/epub_file_types.dart';
-import 'package:liber_epub/features/epub/entities/epub_package.dart';
-import 'package:path/path.dart' as path;
+import 'package:liber_epub/features/epub/entities/file/binary_file.dart';
+import 'package:liber_epub/features/epub/entities/package/epub_2_package.dart';
 
-BinaryEpubFile getBookCover(
+BinaryFile getBookCover(
   final List<ManifestItem> manifestItems,
-  final List<BinaryEpubFile> images,
+  final List<BinaryFile> images,
 ) {
   final ManifestItem? coverItem = manifestItems.firstWhereOrNull(
     (final item) {
@@ -14,8 +13,8 @@ BinaryEpubFile getBookCover(
   );
 
   return coverItem == null
-      ? BinaryEpubFile.empty()
+      ? BinaryFile.empty()
       : images.firstWhere(
-          (final image) => path.basename(coverItem.href) == image.name,
+          (final image) => image.path.contains(coverItem.path),
         );
 }
