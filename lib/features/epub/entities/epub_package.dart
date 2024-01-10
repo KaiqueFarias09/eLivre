@@ -24,7 +24,7 @@ class EpubPackage {
 }
 
 class Manifest {
-  Manifest({required this.items,});
+  Manifest({required this.items});
   final List<ManifestItem> items;
 }
 
@@ -64,11 +64,13 @@ class ManifestItem {
     required this.href,
     required this.id,
     required this.mediaType,
+    this.properties = '',
   });
 
   String href;
   String id;
   String mediaType;
+  String properties;
 
   @override
   String toString() {

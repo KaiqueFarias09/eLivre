@@ -35,6 +35,7 @@ EpubPackage parsePackage(final String xmlString) {
       href: itemElement.getAttribute('href')!,
       id: itemElement.getAttribute('id')!,
       mediaType: itemElement.getAttribute('media-type')!,
+      properties: itemElement.getAttribute('properties') ?? '',
     );
   }).toList();
 
