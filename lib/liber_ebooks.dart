@@ -4,12 +4,16 @@ import 'dart:convert' as convert;
 import 'dart:io';
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/core/utils/get_epub_root_file_path.dart';
-import 'package:liber_epub/core/utils/parse_epub_package.dart';
-import 'package:liber_epub/core/utils/process_package.dart';
+import 'package:liber_epub/features/epub/usecases/epub_file_extractor.dart';
+import 'package:liber_epub/features/epub/utils/get_epub_root_file_path.dart';
+import 'package:liber_epub/features/epub/utils/parse_epub_package.dart';
+import 'package:liber_epub/features/epub/utils/process_package.dart';
 
 class Reader {
-  Future<void> decompressEpub(String path, {String? password}) async {
+  Future<void> decompressEpub(
+    final String path, {
+    final String? password,
+  }) async {
     final file = _getFileIfValid(path);
     final bytes = file.readAsBytesSync();
     final archive = ZipDecoder().decodeBytes(bytes);
@@ -21,9 +25,12 @@ class Reader {
       convert.utf8.decode(rootFile.content as List<int>),
     );
     processPackage(package, archive, rootFilePath);
+
+    final files = EpubFileExtractor().execute(archive, package);
+    print(files);
   }
 
-  File _getFileIfValid(String path) {
+  File _getFileIfValid(final String path) {
     if (path.isEmpty) throw Exception('Path cannot be empty');
 
     final filePath = _sanitizePath(path);
@@ -33,22 +40,26 @@ class Reader {
     return file;
   }
 
-  String _sanitizePath(String input) {
+  String _sanitizePath(final String input) {
     final Uri uri = Uri.parse(input);
     List<String> segments = uri.pathSegments;
     segments = segments
         .where(
-          (segment) => segment.isNotEmpty && segment != '.' && segment != '..',
+          (final segment) =>
+              segment.isNotEmpty && segment != '.' && segment != '..',
         )
         .toList();
 
     return Uri.parse(segments.join('/')).toString();
   }
 
-  ArchiveFile _getRootFile(Archive archive, String? rootFilePath) {
+  ArchiveFile _getRootFile(
+    final Archive archive,
+    final String? rootFilePath,
+  ) {
     if (rootFilePath == null) throw Exception('No root file found');
     return archive.files.firstWhere(
-      (testFile) => testFile.name == rootFilePath,
+      (final testFile) => testFile.name == rootFilePath,
       orElse: () => throw Exception(
         'EPUB parsing error: root file not found.',
       ),
