@@ -1,49 +1,43 @@
 import 'dart:convert' as convert;
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/features/epub/entities/epub_navigation.dart';
-import 'package:liber_epub/features/epub/entities/epub_package.dart';
+import 'package:liber_epub/features/epub/entities/navigation/navigation.dart';
+import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
 import 'package:xml/xml.dart';
 
-EpubNavigation getEpubNavigation(
+Navigation getEpubNavigation(
   final EpubPackage package,
   final Archive archive,
   final String? rootFilePath,
 ) {
-  // TODO: Add support for EPUB 3.0
-  if (package.version == '2.0') {
-    final tocId = package.spine.toc;
-    if (tocId.isEmpty) {
-      throw Exception('EPUB parsing error: TOC ID is empty.');
-    }
+  final tocId = package.spine.toc;
+  if (tocId.isEmpty) throw Exception('EPUB parsing error: TOC ID is empty.');
 
-    final tocManifestItem = package.manifest.items.firstWhere(
-      (final element) => element.id == tocId,
-      orElse: () => throw Exception(
-          'EPUB parsing error: TOC item $tocId not found in EPUB manifest.'),
-    );
+  final tocManifestItem = package.manifest.items.firstWhere(
+    (final element) => element.id == tocId,
+    orElse: () => throw Exception(
+      'EPUB parsing error: TOC item $tocId not found in EPUB manifest.',
+    ),
+  );
 
-    final contentDirectoryPath = _getDirectoryPath(rootFilePath ?? '');
-    final tocFileEntryPath = _combinePaths(
-      contentDirectoryPath,
-      tocManifestItem.href,
-    );
+  final contentDirectoryPath = _getDirectoryPath(rootFilePath ?? '');
+  final tocFileEntryPath = _combinePaths(
+    contentDirectoryPath,
+    tocManifestItem.path,
+  );
 
-    final tocFileEntry = archive.files.firstWhere(
-      (final file) => file.name.toLowerCase() == tocFileEntryPath.toLowerCase(),
-      orElse: () => throw Exception(
-        'EPUB parsing error: TOC file $tocFileEntryPath not found in archive.',
-      ),
-    );
+  final tocFileEntry = archive.files.firstWhere(
+    (final file) => file.name.toLowerCase() == tocFileEntryPath.toLowerCase(),
+    orElse: () => throw Exception(
+      'EPUB parsing error: TOC file $tocFileEntryPath not found in archive.',
+    ),
+  );
 
-    final containerDocument = XmlDocument.parse(
-      convert.utf8.decode(tocFileEntry.content as List<int>),
-    );
-    final navigationContent = EpubNavigation(document: containerDocument);
-    return navigationContent;
-  } else {
-    throw Exception('EPUB parsing error: Unsupported EPUB version.');
-  }
+  final containerDocument = XmlDocument.parse(
+    convert.utf8.decode(tocFileEntry.content as List<int>),
+  );
+  final navigationContent = Navigation(document: containerDocument);
+  return navigationContent;
 }
 
 String _combinePaths(
