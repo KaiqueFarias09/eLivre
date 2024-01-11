@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:liber_epub/features/epub/entities/book/book.dart';
 import 'package:liber_epub/features/epub/utils/read_book.dart';
 import 'package:test/test.dart';
 
@@ -32,17 +33,25 @@ void main() {
       test(
         'should succeed',
         () async {
-          try {
-            final directory = Directory('test/resources');
-            final files = directory.listSync();
+          int index = 0;
+          final directory = Directory('test/resources');
+          final files = directory.listSync();
+          final books = files
+              .where(
+                (final book) => book.path.endsWith('.epub'),
+              )
+              .toList();
 
-            for (final file in files) {
-              if (file is File && file.path.endsWith('.epub')) {
-                await readBook(file.path);
-              }
+          try {
+            final List<EpubBook> bookEntities = [];
+            for (int i = 0; i < books.length; i++) {
+              index = i;
+              bookEntities.add(await readBook(books[i].path));
             }
+            expect(bookEntities.length, files.length);
           } catch (exception) {
-            fail('Exception thrown');
+            fail(
+                'Exception thrown at index $index, file: ${files[index].path}');
           }
         },
       );
