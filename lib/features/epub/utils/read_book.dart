@@ -8,6 +8,7 @@ import 'package:liber_epub/features/epub/utils/get_book_cover.dart';
 import 'package:liber_epub/features/epub/utils/get_epub_root_file_path.dart';
 import 'package:liber_epub/features/epub/utils/parse_epub_package.dart';
 import 'package:liber_epub/features/epub/utils/process_package.dart';
+import 'package:path/path.dart' as path;
 
 Future<EpubBook> readBook(
   final String path, {
@@ -36,24 +37,14 @@ Future<EpubBook> readBook(
   );
 }
 
-File _getFileIfValid(final String path) {
-  if (path.isEmpty) throw Exception('Path cannot be empty');
+File _getFileIfValid(final String filePath) {
+  if (filePath.isEmpty) throw Exception('Path cannot be empty');
 
-  final filePath = _sanitizePath(path);
-  final file = File(filePath);
+  final sanitizedPath = path.normalize(filePath);
+  final file = File(sanitizedPath);
   if (!file.existsSync()) throw Exception('No such file or directory');
 
   return file;
-}
-
-String _sanitizePath(final String input) {
-  final Uri uri = Uri.parse(input);
-  List<String> segments = uri.pathSegments;
-  segments = segments.where((final segment) {
-    return segment.isNotEmpty && segment != '.' && segment != '..';
-  }).toList();
-
-  return Uri.parse(segments.join('/')).toString();
 }
 
 ArchiveFile _getRootFile(final Archive archive, final String? rootFilePath) {
