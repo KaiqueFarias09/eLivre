@@ -16,5 +16,6 @@ BinaryFile getBookCover(
       ? BinaryFile.empty()
       : images.firstWhere(
           (final image) => image.path.contains(coverItem.path),
+          orElse: BinaryFile.empty,
         );
 }
