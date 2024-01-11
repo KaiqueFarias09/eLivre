@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:liber_epub/features/epub/entities/package/epub_2_package.dart';
 import 'package:liber_epub/features/epub/entities/package/epub_3_package.dart';
 import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
@@ -16,7 +17,7 @@ EpubPackage parsePackage(final String xmlString) {
   final manifestItems = _parseManifestItems(manifestElement);
   final spine = _parseSpine(spineElement);
 
-  if (version != '2.0') {
+  if (_isEpub2(version)) {
     final guideElement = packageElement.findElements('guide').firstOrNull;
     final guide = guideElement != null ? _parseGuide(guideElement) : null;
 
@@ -30,6 +31,16 @@ EpubPackage parsePackage(final String xmlString) {
       guide: guide,
     );
   } else {
+    final tocElement = manifestElement.findElements('item').firstWhereOrNull(
+          (final element) =>
+              element.getAttribute('properties')?.contains('nav') == true,
+        );
+
+    final tocPath = tocElement?.getAttribute('id') ?? spine.tocId;
+    if (tocPath == null) {
+      throw Exception('EPUB parsing package error: TOC ID is empty.');
+    }
+
     return Epub3Package(
       xmlns: packageElement.getAttribute('xmlns'),
       uniqueIdentifier: packageElement.getAttribute('unique-identifier')!,
@@ -37,6 +48,7 @@ EpubPackage parsePackage(final String xmlString) {
       metadata: metadata,
       manifest: Epub2Manifest(items: manifestItems),
       spine: spine,
+      tocId: tocPath,
     );
   }
 }
@@ -48,7 +60,7 @@ BaseMetadata _parseMetadata(
     return elements.isEmpty ? '' : elements.first.value ?? '';
   }
 
-  return version != '2.0'
+  return _isEpub2(version)
       ? Epub2Metadata(
           rights: getElementText('dc:rights'),
           contributor: getElementText('dc:contributor'),
@@ -90,7 +102,7 @@ List<ManifestItem> _parseManifestItems(final XmlElement manifestElement) {
 
 Spine _parseSpine(final XmlElement spineElement) {
   return Spine(
-    toc: spineElement.getAttribute('toc')!,
+    tocId: spineElement.getAttribute('toc'),
     item: spineElement
         .findElements('itemref')
         .map((final itemrefElement) => itemrefElement.getAttribute('idref')!)
@@ -110,3 +122,5 @@ Guide? _parseGuide(final XmlElement guideElement) {
     }).toList(),
   );
 }
+
+bool _isEpub2(final String version) => double.parse(version) < 3.0;

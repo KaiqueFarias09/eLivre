@@ -1,4 +1,4 @@
-import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
+import 'package:liber_epub/liber_ebooks.dart';
 
 class Epub3Package extends EpubPackage {
   Epub3Package({
@@ -8,7 +8,12 @@ class Epub3Package extends EpubPackage {
     required super.spine,
     required super.uniqueIdentifier,
     required super.xmlns,
+    required this.tocId,
   });
+
+  /// tocPath is present on some EPUB 3.0 books where instead of defining the
+  /// toc in the spine it is defined in the manifest directly
+  final String? tocId;
 }
 
 class Epub3Metadata extends BaseMetadata {
@@ -39,5 +44,5 @@ class Epub3Manifest extends BaseManifest {
   });
 
   // EPUB 3.0 specific properties
-  String properties;
+  final String properties;
 }

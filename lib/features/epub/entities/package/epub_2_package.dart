@@ -62,16 +62,16 @@ class ManifestItem {
 
 class Spine {
   Spine({
-    required this.toc,
+    required this.tocId,
     required this.item,
   });
 
-  String toc;
+  String? tocId;
   List<String> item;
 
   @override
   String toString() {
-    return 'Spine(toc: $toc, item: $item)';
+    return 'Spine(toc: $tocId, item: $item)';
   }
 }
 
