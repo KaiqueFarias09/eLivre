@@ -4,6 +4,17 @@ import 'package:liber_epub/features/epub/entities/package/epub_3_package.dart';
 import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
 import 'package:xml/xml.dart';
 
+/// Parses the provided XML string into an `EpubPackage`.
+///
+/// The function first parses the XML string into an XML document, then retrieves the package element from the document.
+/// It then retrieves the version, metadata, manifest, and spine from the package element.
+/// Depending on the version, it either creates an `Epub2Package` or an `Epub3Package` from the retrieved data.
+///
+/// [xmlString] is the XML string to parse.
+///
+/// Returns an `EpubPackage` representing the parsed package.
+///
+/// Throws an `Exception` if the TOC ID is empty when creating an `Epub3Package`.
 EpubPackage parsePackage(final String xmlString) {
   final document = XmlDocument.parse(xmlString);
   final packageElement = document.findElements('package').first;

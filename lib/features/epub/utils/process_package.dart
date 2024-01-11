@@ -4,6 +4,19 @@ import 'package:archive/archive.dart';
 import 'package:liber_epub/liber_ebooks.dart';
 import 'package:xml/xml.dart';
 
+/// Retrieves the navigation of the EPUB from the provided package and archive.
+///
+/// The function first gets the TOC ID from the package, then finds the TOC manifest item with that ID.
+/// It then gets the TOC file entry from the archive and parses it into an XML document.
+/// Finally, it creates a `Navigation` object from the container document.
+///
+/// [package] is the `EpubPackage` from which to retrieve the TOC ID.
+/// [archive] is the `Archive` from which to retrieve the TOC file entry.
+/// [rootFilePath] is the root file path of the EPUB.
+///
+/// Returns a `Navigation` representing the navigation of the EPUB.
+///
+/// Throws an `Exception` if the TOC ID is empty, the TOC manifest item could not be found, or the TOC file entry could not be found.
 Navigation getEpubNavigation(
   final EpubPackage package,
   final Archive archive,

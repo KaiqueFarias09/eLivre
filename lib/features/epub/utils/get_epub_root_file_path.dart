@@ -5,6 +5,14 @@ import 'package:liber_epub/features/epub/constants/epub_constants.dart'
     as epub_constants;
 import 'package:xml/xml.dart';
 
+/// Retrieves the root file path of the EPUB from the provided archive.
+///
+/// The function first gets the container file entry from the archive, then parses it into an XML document.
+/// It then gets the package element from the container document and retrieves the root file path from the package.
+///
+/// [epubArchive] is the archive from which to retrieve the root file path.
+///
+/// Returns a `Future` that completes with the root file path of the EPUB, or `null` if the root file path could not be found.
 Future<String?> getEpubRootFilePath(final Archive epubArchive) async {
   final containerFileEntry = _getContainerFileEntry(epubArchive);
   final containerDocument = XmlDocument.parse(convert.utf8.decode(
