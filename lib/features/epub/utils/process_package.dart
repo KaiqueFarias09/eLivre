@@ -1,8 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/features/epub/entities/navigation/navigation.dart';
-import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
+import 'package:liber_epub/liber_ebooks.dart';
 import 'package:xml/xml.dart';
 
 Navigation getEpubNavigation(
@@ -10,8 +9,11 @@ Navigation getEpubNavigation(
   final Archive archive,
   final String? rootFilePath,
 ) {
-  final tocId = package.spine.toc;
-  if (tocId.isEmpty) throw Exception('EPUB parsing error: TOC ID is empty.');
+  final tocId = package is Epub3Package && package.spine.tocId == null
+      ? package.tocId
+      : package.spine.tocId;
+
+  if (tocId == null) throw Exception('EPUB parsing error: TOC ID is empty.');
 
   final tocManifestItem = package.manifest.items.firstWhere(
     (final element) => element.id == tocId,
