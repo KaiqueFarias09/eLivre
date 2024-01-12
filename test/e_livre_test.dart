@@ -51,7 +51,8 @@ void main() {
             expect(bookEntities.length, files.length);
           } catch (exception) {
             fail(
-                'Exception thrown at index $index, file: ${files[index].path}');
+              'Exception thrown at index $index, file: ${files[index].path}',
+            );
           }
         },
       );
