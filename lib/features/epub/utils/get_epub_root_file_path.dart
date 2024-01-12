@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/features/epub/constants/epub_constants.dart'
+import 'package:e_livre/features/epub/constants/epub_constants.dart'
     as epub_constants;
 import 'package:xml/xml.dart';
 

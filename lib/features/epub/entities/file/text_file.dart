@@ -1,4 +1,4 @@
-import 'package:liber_epub/features/epub/entities/file/epub_file.dart';
+import 'package:e_livre/features/epub/entities/file/epub_file.dart';
 
 /// Represents a text EPUB file.
 ///
@@ -10,10 +10,10 @@ class TextFile extends EpubFile {
   /// Requires [content], [name], [path], and [type] to be non-null.
   TextFile({
     required this.content,
-    required final String name,
-    required final String type,
-    required final String path,
-  }) : super(name: name, type: type, path: path);
+    required super.name,
+    required super.type,
+    required super.path,
+  });
 
   /// The text content of the EPUB file.
   final String content;

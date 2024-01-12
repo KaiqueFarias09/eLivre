@@ -1,5 +1,5 @@
-import 'package:liber_epub/features/epub/entities/file/binary_file.dart';
-import 'package:liber_epub/features/epub/entities/file/text_file.dart';
+import 'package:e_livre/features/epub/entities/file/binary_file.dart';
+import 'package:e_livre/features/epub/entities/file/text_file.dart';
 
 /// Represents the files contained in an EPUB document.
 ///

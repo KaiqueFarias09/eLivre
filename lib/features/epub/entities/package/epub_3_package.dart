@@ -1,4 +1,4 @@
-import 'package:liber_epub/liber_ebooks.dart';
+import 'package:e_livre/e_livre.dart';
 
 class Epub3Package extends EpubPackage {
   Epub3Package({

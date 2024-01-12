@@ -1,4 +1,4 @@
-import 'package:liber_epub/features/epub/entities/navigation/nav_point.dart';
+import 'package:e_livre/features/epub/entities/navigation/nav_point.dart';
 import 'package:xml/xml.dart';
 
 /// Represents the navigation structure of an EPUB document.

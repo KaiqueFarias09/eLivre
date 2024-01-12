@@ -2,12 +2,12 @@ import 'dart:convert' as convert;
 import 'dart:io';
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/features/epub/entities/book/book.dart';
-import 'package:liber_epub/features/epub/utils/extract_files.dart';
-import 'package:liber_epub/features/epub/utils/get_book_cover.dart';
-import 'package:liber_epub/features/epub/utils/get_epub_root_file_path.dart';
-import 'package:liber_epub/features/epub/utils/parse_epub_package.dart';
-import 'package:liber_epub/features/epub/utils/process_package.dart';
+import 'package:e_livre/features/epub/entities/book/book.dart';
+import 'package:e_livre/features/epub/utils/extract_files.dart';
+import 'package:e_livre/features/epub/utils/get_book_cover.dart';
+import 'package:e_livre/features/epub/utils/get_epub_root_file_path.dart';
+import 'package:e_livre/features/epub/utils/parse_epub_package.dart';
+import 'package:e_livre/features/epub/utils/process_package.dart';
 import 'package:path/path.dart' as path;
 
 /// Reads an EPUB book from the provided path.

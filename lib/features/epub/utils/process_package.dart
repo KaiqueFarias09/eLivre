@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:archive/archive.dart';
-import 'package:liber_epub/liber_ebooks.dart';
+import 'package:e_livre/e_livre.dart';
 import 'package:xml/xml.dart';
 
 /// Retrieves the navigation of the EPUB from the provided package and archive.

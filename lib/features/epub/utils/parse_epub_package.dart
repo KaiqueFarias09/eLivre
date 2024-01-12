@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:liber_epub/features/epub/entities/package/epub_2_package.dart';
-import 'package:liber_epub/features/epub/entities/package/epub_3_package.dart';
-import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
+import 'package:e_livre/features/epub/entities/package/epub_2_package.dart';
+import 'package:e_livre/features/epub/entities/package/epub_3_package.dart';
+import 'package:e_livre/features/epub/entities/package/epub_package.dart';
 import 'package:xml/xml.dart';
 
 /// Parses the provided XML string into an `EpubPackage`.
@@ -68,7 +68,7 @@ BaseMetadata _parseMetadata(
     final XmlElement metadataElement, final String version) {
   String getElementText(final String name) {
     final elements = metadataElement.findElements(name);
-    return elements.isEmpty ? '' : elements.first.value ?? '';
+    return elements.isEmpty ? '' : elements.first.innerText.trim();
   }
 
   return _isEpub2(version)

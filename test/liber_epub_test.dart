@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:liber_epub/features/epub/entities/book/book.dart';
-import 'package:liber_epub/features/epub/utils/read_book.dart';
+import 'package:e_livre/features/epub/entities/book/book.dart';
+import 'package:e_livre/features/epub/utils/read_book.dart';
 import 'package:test/test.dart';
 
 void main() {

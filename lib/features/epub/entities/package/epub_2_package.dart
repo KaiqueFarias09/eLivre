@@ -1,4 +1,4 @@
-import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
+import 'package:e_livre/features/epub/entities/package/epub_package.dart';
 
 class Epub2Package extends EpubPackage {
   Epub2Package({

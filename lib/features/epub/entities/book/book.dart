@@ -1,7 +1,7 @@
-import 'package:liber_epub/features/epub/entities/book/files.dart';
-import 'package:liber_epub/features/epub/entities/file/binary_file.dart';
-import 'package:liber_epub/features/epub/entities/navigation/navigation.dart';
-import 'package:liber_epub/features/epub/entities/package/epub_package.dart';
+import 'package:e_livre/features/epub/entities/book/files.dart';
+import 'package:e_livre/features/epub/entities/file/binary_file.dart';
+import 'package:e_livre/features/epub/entities/navigation/navigation.dart';
+import 'package:e_livre/features/epub/entities/package/epub_package.dart';
 
 class EpubBook {
   EpubBook({

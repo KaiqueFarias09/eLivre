@@ -1,5 +1,5 @@
 // Base classes
-import 'package:liber_epub/features/epub/entities/package/epub_2_package.dart';
+import 'package:e_livre/features/epub/entities/package/epub_2_package.dart';
 
 abstract class EpubPackage {
   EpubPackage({

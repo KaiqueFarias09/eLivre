@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:liber_epub/features/epub/entities/file/epub_file.dart';
+import 'package:e_livre/features/epub/entities/file/epub_file.dart';
 
 /// Represents a binary EPUB file.
 ///
@@ -12,10 +12,10 @@ class BinaryFile extends EpubFile {
   /// Requires [content], [name], [path], and [type] to be non-null.
   BinaryFile({
     required this.content,
-    required final String name,
-    required final String type,
-    required final String path,
-  }) : super(name: name, type: type, path: path);
+    required super.name,
+    required super.type,
+    required super.path,
+  });
 
   /// Creates an empty [BinaryFile].
   factory BinaryFile.empty() {
