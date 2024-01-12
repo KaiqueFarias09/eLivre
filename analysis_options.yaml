@@ -1,9 +1,9 @@
-include: package:flutter_lints/flutter.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
   errors:
     missing_required_param: error
-    missing_return: error
+    missing_return: error 
     unused_element: error
     unused_field: error
     unused_local_variable: error
@@ -16,10 +16,8 @@ analyzer:
     - test/tests/res/**
     - test/**
 
-    
 linter:
   rules:
-
     - prefer_asserts_in_initializer_lists
     - prefer_const_constructors
     - prefer_final_fields
