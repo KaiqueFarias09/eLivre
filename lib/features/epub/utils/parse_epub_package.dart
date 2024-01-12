@@ -64,7 +64,7 @@ EpubPackage parsePackage(final String xmlString) {
   }
 }
 
-BaseMetadata _parseMetadata(
+Metadata _parseMetadata(
     final XmlElement metadataElement, final String version) {
   String getElementText(final String name) {
     final elements = metadataElement.findElements(name);

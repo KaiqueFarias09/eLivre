@@ -14,15 +14,15 @@ abstract class EpubPackage {
 
   String uniqueIdentifier;
   String version;
-  BaseMetadata metadata;
-  BaseManifest manifest;
+  Metadata metadata;
+  Manifest manifest;
   Spine spine;
   String? xmlns;
   Guide? guide;
 }
 
-abstract class BaseMetadata {
-  BaseMetadata({
+abstract class Metadata {
+  Metadata({
     required this.title,
     required this.date,
     required this.language,
@@ -47,8 +47,8 @@ abstract class BaseMetadata {
   String? publisher;
 }
 
-abstract class BaseManifest {
-  BaseManifest({required this.items});
+abstract class Manifest {
+  Manifest({required this.items});
 
   List<ManifestItem> items;
 }

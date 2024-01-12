@@ -16,7 +16,7 @@ class Epub3Package extends EpubPackage {
   final String? tocId;
 }
 
-class Epub3Metadata extends BaseMetadata {
+class Epub3Metadata extends Metadata {
   Epub3Metadata({
     required super.rights,
     required super.contributor,
@@ -37,7 +37,7 @@ class Epub3Metadata extends BaseMetadata {
   String accessibilitySummary;
 }
 
-class Epub3Manifest extends BaseManifest {
+class Epub3Manifest extends Manifest {
   Epub3Manifest({
     required super.items,
     required this.properties,

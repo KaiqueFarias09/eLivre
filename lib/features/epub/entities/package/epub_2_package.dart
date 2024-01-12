@@ -17,11 +17,11 @@ class Epub2Package extends EpubPackage {
   }
 }
 
-class Epub2Manifest extends BaseManifest {
+class Epub2Manifest extends Manifest {
   Epub2Manifest({required super.items});
 }
 
-class Epub2Metadata extends BaseMetadata {
+class Epub2Metadata extends Metadata {
   Epub2Metadata({
     required super.rights,
     required super.contributor,
