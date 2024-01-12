@@ -30,32 +30,21 @@ void main() {
         }
       });
 
-      test(
-        'should succeed',
-        () async {
-          int index = 0;
-          final directory = Directory('test/resources');
-          final files = directory.listSync();
-          final books = files
-              .where(
-                (final book) => book.path.endsWith('.epub'),
-              )
-              .toList();
+      final directory = Directory('test/resources');
+      final files = directory.listSync();
+      final books = files.where((final book) {
+        return book.path.endsWith('.epub');
+      }).toList();
 
-          try {
-            final List<EpubBook> bookEntities = [];
-            for (int i = 0; i < books.length; i++) {
-              index = i;
-              bookEntities.add(await readBook(books[i].path));
-            }
-            expect(bookEntities.length, files.length);
-          } catch (exception) {
-            fail(
-              'Exception thrown at index $index, file: ${files[index].path}',
-            );
-          }
-        },
-      );
+      for (final book in books) {
+        test(
+          'should succeed',
+          () async {
+            final EpubBook bookEntity = await readBook(book.path);
+            expect(bookEntity, isA<EpubBook>());
+          },
+        );
+      }
     },
   );
 }
