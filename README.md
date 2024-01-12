@@ -1,39 +1,37 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# eLivre
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This is a Dart package for handling ebook files in EPUB 2.0 and 3.0 formats.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Read EPUB 2.0 and EPUB 3.0 files
+- Navigate through the book structure
+- Extract book metadata
+- Extract book files
 
-## Getting started
+## Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, add `e_livre` as a dependency in your `pubspec.yaml` file.
+
+```dart
+dependencies:
+  e_livre: ^1.0.0
+```
+
+Then, run `flutter pub get` in your terminal.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here's a basic example of how to use the package:
 
 ```dart
-const like = 'sample';
+import 'package:e_livre/e_livre.dart' as livre;
+
+void main() async {
+  final book = await livre.readBook('test/resources/linear-algebra.epub');
+
+  print(book.package.metadata.title);
+  print(book.package.metadata.creator);
+  print(book.package.metadata.language);
+}
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
