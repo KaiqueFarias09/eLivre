@@ -6,4 +6,5 @@ void main() async {
   print(book.package.metadata.title);
   print(book.package.metadata.creator);
   print(book.package.metadata.language);
+  print(book.package.metadata.subject);
 }
