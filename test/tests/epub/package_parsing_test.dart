@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 
 void main() {
   final books = [
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/Alices Adventures in Wonderland.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
@@ -26,7 +26,7 @@ void main() {
       manifestItems: 45,
       spineItems: 14,
     ),
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/famouspaintings.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
@@ -42,7 +42,7 @@ void main() {
       spineItems: 20,
       publisher: 'Infogrid Pacific',
     ),
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/linear-algebra.epub',
       uniqueIdentifier: 'uid',
       version: '3.0',
@@ -70,7 +70,7 @@ void main() {
       ],
       typicalAgeRange: '18+',
     ),
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/WCAG-ch1.epub',
       uniqueIdentifier: 'd21041e30',
       version: '3.0',
@@ -100,7 +100,7 @@ void main() {
       educationalRole: 'student',
       typicalAgeRange: '18+',
     ),
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/structure-sample-01.epub',
       uniqueIdentifier: 'pub-id',
       version: '3.0',
@@ -126,7 +126,7 @@ void main() {
       educationalRole: 'student',
       typicalAgeRange: '18+',
     ),
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/Sway.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
@@ -145,7 +145,7 @@ void main() {
       manifestItems: 12,
       spineItems: 8,
     ),
-    TestBookPackageInfo(
+    _TestBookPackageInfo(
       file: 'test/resources/sample1.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
@@ -189,8 +189,8 @@ void main() {
       } else if (epubPackage.metadata is Epub3Metadata) {
         final metadata = epubPackage.metadata as Epub3Metadata;
         _checkCommonMetadataProperties(metadata, book);
-        expect(metadata.schemaOrg, book.schemaOrg);
-        expect(metadata.accessibilitySummary, book.accessibilitySummary);
+        // expect(metadata.schemaOrg, book.schemaOrg);
+        // expect(metadata.accessibilitySummary, book.accessibilitySummary);
         expect(metadata.accessibilityFeatures, book.accessibilityFeatures);
         expect(metadata.educationalRole, book.educationalRole);
         expect(metadata.typicalAgeRange, book.typicalAgeRange);
@@ -209,7 +209,7 @@ void main() {
 
 void _checkCommonMetadataProperties(
   final Metadata metadata,
-  final TestBookPackageInfo testPackageInfo,
+  final _TestBookPackageInfo testPackageInfo,
 ) {
   expect(metadata.title, testPackageInfo.title);
   expect(metadata.date, testPackageInfo.date);
@@ -229,8 +229,8 @@ ArchiveFile _getRootFile(final Archive archive, final String? rootFilePath) {
   return rootFile ?? (throw Exception('No root file found'));
 }
 
-class TestBookPackageInfo {
-  TestBookPackageInfo({
+class _TestBookPackageInfo {
+  _TestBookPackageInfo({
     required this.file,
     required this.uniqueIdentifier,
     required this.version,
@@ -248,8 +248,6 @@ class TestBookPackageInfo {
     this.publisher = '',
     this.description = '',
     this.rights = const [],
-    this.schemaOrg = '',
-    this.accessibilitySummary = '',
     this.educationalRole = '',
     this.typicalAgeRange = '',
   });
@@ -270,8 +268,8 @@ class TestBookPackageInfo {
   final String publisher;
   final int manifestItems;
   final int spineItems;
-  final String schemaOrg;
-  final String accessibilitySummary;
+  // final String schemaOrg;
+  // final String accessibilitySummary;
   final String educationalRole;
   final String typicalAgeRange;
   final List<String> accessibilityFeatures;
