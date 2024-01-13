@@ -26,7 +26,8 @@ abstract class Metadata {
     required this.title,
     required this.date,
     required this.language,
-    required this.identifier,
+    required this.identifiers,
+    required this.uniqueIdentifierValue,
     this.rights,
     this.contributor,
     this.creator,
@@ -38,10 +39,14 @@ abstract class Metadata {
   String title;
   String date;
   String language;
-  String identifier;
+  List<String> identifiers;
+
+  /// Is the text value of the element that has the unique identifier as 
+  /// a property
+  String uniqueIdentifierValue;
   String? subject;
   String? description;
-  String? rights;
+  List<String>? rights;
   String? contributor;
   String? creator;
   String? publisher;
