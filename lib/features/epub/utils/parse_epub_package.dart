@@ -177,13 +177,19 @@ Metadata _parseMetadata(
     language: language,
     subject: subject,
     description: description,
-
-    // TODO: Fix this, not always the first element is the identifier
-    // <dc:identifier opf:scheme="ISBN">9780446511070</dc:identifier>
-    // <dc:identifier id="uuid_id" opf:scheme="uuid">488e41dd-11d3-45e4-b776-173d26db6306</dc:identifier>
     identifiers: identifiers,
-    schemaOrg: getElementText('schema:org'),
-    accessibilitySummary: getElementText('a11y:summary'),
+    schemaOrgs: metadataElement
+        .findElements('meta')
+        .where(
+            (final element) => element.getAttribute('property') == 'schema:org')
+        .map((final e) => e.innerText.trim())
+        .toList(),
+    accessibilitySummaries: metadataElement
+        .findElements('meta')
+        .where((final element) =>
+            element.getAttribute('property') == 'a11y:summary')
+        .map((final e) => e.innerText.trim())
+        .toList(),
     educationalRole: educationalRole,
     typicalAgeRange: typicalAgeRange,
     accessibilityFeatures: accessibilityFeatures,
@@ -197,7 +203,8 @@ List<ManifestItem> _parseManifestItems(final XmlElement manifestElement) {
       path: itemElement.getAttribute('href')!,
       id: itemElement.getAttribute('id')!,
       mediaType: itemElement.getAttribute('media-type')!,
-      properties: itemElement.getAttribute('properties') ?? '',
+      properties:
+          itemElement.getAttribute('properties')?.split(' ').toList() ?? [],
     );
   }).toList();
 }
