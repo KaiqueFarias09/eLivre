@@ -32,12 +32,13 @@ class Epub2Metadata extends Metadata {
     required super.language,
     required super.subject,
     required super.description,
-    required super.identifier,
+    required super.identifiers,
+    required super.uniqueIdentifierValue,
   });
 
   @override
   String toString() {
-    return 'Metadata(rights: $rights, contributor: $contributor, creator: $creator, publisher: $publisher, title: $title, date: $date, language: $language, subject: $subject, description: $description, identifier: $identifier)';
+    return 'Metadata(rights: $rights, contributor: $contributor, creator: $creator, publisher: $publisher, title: $title, date: $date, language: $language, subject: $subject, description: $description, identifier: $identifiers)';
   }
 }
 
@@ -63,15 +64,15 @@ class ManifestItem {
 class Spine {
   Spine({
     required this.tocId,
-    required this.item,
+    required this.items,
   });
 
   String? tocId;
-  List<String> item;
+  List<String> items;
 
   @override
   String toString() {
-    return 'Spine(toc: $tocId, item: $item)';
+    return 'Spine(toc: $tocId, item: $items)';
   }
 }
 
