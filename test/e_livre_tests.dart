@@ -1,50 +1,9 @@
-import 'dart:io';
+library e_livre_tests;
 
-import 'package:e_livre/features/epub/entities/book/book.dart';
-import 'package:e_livre/features/epub/utils/read_book.dart';
-import 'package:test/test.dart';
+import 'tests/epub/open_book_test.dart' as open_book_test;
+import 'tests/epub/package_parsing_test.dart' as package_parsing_test;
 
 void main() {
-  group(
-    'Reader',
-    () {
-      test('should throw exception when path is empty', () async {
-        const path = '';
-        try {
-          await readBook(path);
-          fail('Exception not thrown');
-        } catch (exception) {
-          expect(exception, isA<Exception>());
-          expect(exception.toString(), 'Exception: Path cannot be empty');
-        }
-      });
-
-      test('should throw exception when file does not exist', () async {
-        const path = '/path/to/nonexistent/file.epub';
-        try {
-          await readBook(path);
-          fail('Exception not thrown');
-        } catch (exception) {
-          expect(exception, isA<Exception>());
-          expect(exception.toString(), 'Exception: No such file or directory');
-        }
-      });
-
-      final directory = Directory('test/resources');
-      final files = directory.listSync();
-      final books = files.where((final book) {
-        return book.path.endsWith('.epub');
-      }).toList();
-
-      for (final book in books) {
-        test(
-          'should succeed',
-          () async {
-            final EpubBook bookEntity = await readBook(book.path);
-            expect(bookEntity, isA<EpubBook>());
-          },
-        );
-      }
-    },
-  );
+  open_book_test.main();
+  package_parsing_test.main();
 }
