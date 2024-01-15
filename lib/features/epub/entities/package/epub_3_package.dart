@@ -34,6 +34,11 @@ class Epub3Metadata extends Metadata {
     required this.educationalRole,
     required this.typicalAgeRange,
     required this.accessibilityFeatures,
+    required this.modified,
+    required this.rendition,
+    required this.belongsToCollection,
+    required this.sourceOf,
+    required this.recordIdentifier,
   });
 
   List<String> schemaOrgs;
@@ -41,6 +46,11 @@ class Epub3Metadata extends Metadata {
   List<String> accessibilityFeatures;
   String educationalRole;
   String typicalAgeRange;
+  String modified;
+  String rendition;
+  String belongsToCollection;
+  String sourceOf;
+  String recordIdentifier;
 }
 
 class Epub3Manifest extends Manifest {

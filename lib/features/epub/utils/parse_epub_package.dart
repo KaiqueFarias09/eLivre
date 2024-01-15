@@ -194,6 +194,44 @@ Metadata _parseMetadata(
     typicalAgeRange: typicalAgeRange,
     accessibilityFeatures: accessibilityFeatures,
     uniqueIdentifierValue: uniqueIdentifierValue,
+    modified: metadataElement
+        .findElements('meta')
+        .where((final element) =>
+            element.getAttribute('property') == 'dcterms:modified')
+        .first
+        .innerText
+        .trim(),
+    rendition: metadataElement
+        .findElements('meta')
+        .where(
+            (final element) => element.getAttribute('property') == 'rendition')
+        .first
+        .innerText
+        .trim(),
+    belongsToCollection: metadataElement
+        .findElements('meta')
+        .where((final element) =>
+            element.getAttribute('property') == 'belongs-to-collection')
+        .first
+        .innerText
+        .trim(),
+    sourceOf: metadataElement
+            .findElements('meta')
+            .firstWhereOrNull(
+              (final element) =>
+                  element.getAttribute('refines') == '#cover-image' &&
+                  element.getAttribute('property') == 'source-of',
+            )
+            ?.innerText
+            .trim() ??
+        '',
+    recordIdentifier: metadataElement
+        .findElements('meta')
+        .where((final element) =>
+            element.getAttribute('property') == 'dcterms:recordIdentifier')
+        .first
+        .innerText
+        .trim(),
   );
 }
 
