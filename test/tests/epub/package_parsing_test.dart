@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 void main() {
   final books = [
     _TestBookPackageInfo(
-      file: 'test/resources/Alices Adventures in Wonderland.epub',
+      file: 'test/resources/epub/Alices Adventures in Wonderland.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
       title: "Alice's Adventures in Wonderland",
@@ -27,7 +27,7 @@ void main() {
       spineItems: 14,
     ),
     _TestBookPackageInfo(
-      file: 'test/resources/famouspaintings.epub',
+      file: 'test/resources/epub/famouspaintings.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
       title: 'Famous Paintings',
@@ -43,7 +43,7 @@ void main() {
       publisher: 'Infogrid Pacific',
     ),
     _TestBookPackageInfo(
-      file: 'test/resources/linear-algebra.epub',
+      file: 'test/resources/epub/linear-algebra.epub',
       uniqueIdentifier: 'uid',
       version: '3.0',
       title: 'A First Course in Linear Algebra',
@@ -71,7 +71,7 @@ void main() {
       typicalAgeRange: '18+',
     ),
     _TestBookPackageInfo(
-      file: 'test/resources/WCAG-ch1.epub',
+      file: 'test/resources/epub/WCAG-ch1.epub',
       uniqueIdentifier: 'd21041e30',
       version: '3.0',
       title: 'World Cultures and Geography',
@@ -101,7 +101,7 @@ void main() {
       typicalAgeRange: '18+',
     ),
     _TestBookPackageInfo(
-      file: 'test/resources/structure-sample-01.epub',
+      file: 'test/resources/epub/structure-sample-01.epub',
       uniqueIdentifier: 'pub-id',
       version: '3.0',
       title: 'Education Structure Sample',
@@ -127,7 +127,7 @@ void main() {
       typicalAgeRange: '18+',
     ),
     _TestBookPackageInfo(
-      file: 'test/resources/Sway.epub',
+      file: 'test/resources/epub/Sway.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
       title: 'Sway',
@@ -146,7 +146,7 @@ void main() {
       spineItems: 8,
     ),
     _TestBookPackageInfo(
-      file: 'test/resources/sample1.epub',
+      file: 'test/resources/epub/sample1.epub',
       uniqueIdentifier: 'uuid_id',
       version: '2.0',
       title:

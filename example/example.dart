@@ -1,7 +1,7 @@
 import 'package:e_livre/e_livre.dart' as livre;
 
 void main() async {
-  final book = await livre.readBook('test/resources/linear-algebra.epub');
+  final book = await livre.readBook('test/resources/epub/linear-algebra.epub');
 
   print(book.package.metadata.title);
   print(book.package.metadata.creator);

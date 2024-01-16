@@ -30,7 +30,7 @@ void main() {
         }
       });
 
-      final directory = Directory('test/resources');
+      final directory = Directory('test/resources/epub');
       final files = directory.listSync();
       final books = files.where((final book) {
         return book.path.endsWith('.epub');
