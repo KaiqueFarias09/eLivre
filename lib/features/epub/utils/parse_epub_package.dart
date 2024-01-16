@@ -202,19 +202,21 @@ Metadata _parseMetadata(
         .innerText
         .trim(),
     rendition: metadataElement
-        .findElements('meta')
-        .where(
-            (final element) => element.getAttribute('property') == 'rendition')
-        .first
-        .innerText
-        .trim(),
+            .findElements('meta')
+            .firstWhereOrNull(
+              (final element) =>
+                  element.getAttribute('property') == 'rendition',
+            )
+            ?.innerText
+            .trim() ??
+        '',
     belongsToCollection: metadataElement
-        .findElements('meta')
-        .where((final element) =>
-            element.getAttribute('property') == 'belongs-to-collection')
-        .first
-        .innerText
-        .trim(),
+            .findElements('meta')
+            .firstWhereOrNull((final element) =>
+                element.getAttribute('property') == 'belongs-to-collection')
+            ?.innerText
+            .trim() ??
+        '',
     sourceOf: metadataElement
             .findElements('meta')
             .firstWhereOrNull(
@@ -226,12 +228,15 @@ Metadata _parseMetadata(
             .trim() ??
         '',
     recordIdentifier: metadataElement
-        .findElements('meta')
-        .where((final element) =>
-            element.getAttribute('property') == 'dcterms:recordIdentifier')
-        .first
-        .innerText
-        .trim(),
+            .findElements('meta')
+            .firstWhereOrNull(
+              (final element) =>
+                  element.getAttribute('property') ==
+                  'dcterms:recordIdentifier',
+            )
+            ?.innerText
+            .trim() ??
+        '',
   );
 }
 
