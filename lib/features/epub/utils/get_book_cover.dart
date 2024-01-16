@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:e_livre/features/epub/entities/file/binary_file.dart';
-import 'package:e_livre/features/epub/entities/package/epub_2_package.dart';
+import 'package:e_livre/features/epub/entities/package/epub_package.dart';
 
 /// Retrieves the cover of the book from the provided manifest items and images.
 ///

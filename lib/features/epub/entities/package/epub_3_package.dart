@@ -11,8 +11,8 @@ class Epub3Package extends EpubPackage {
     required this.tocId,
   });
 
-  /// tocPath is present on some EPUB 3.0 books where instead of defining the
-  /// toc in the spine it is defined in the manifest directly
+  // On some EPUB 3.0 files the tocPath is present directly on the manifest
+  // element, but in others it is defined in the spine element instead
   final String? tocId;
 }
 
@@ -27,14 +27,30 @@ class Epub3Metadata extends Metadata {
     required super.language,
     required super.subject,
     required super.description,
-    required super.identifier,
-    required this.schemaOrg,
-    required this.accessibilitySummary,
+    required super.identifiers,
+    required super.uniqueIdentifierValue,
+    required this.schemaOrgs,
+    required this.accessibilitySummaries,
+    required this.educationalRole,
+    required this.typicalAgeRange,
+    required this.accessibilityFeatures,
+    required this.modified,
+    required this.rendition,
+    required this.belongsToCollection,
+    required this.sourceOf,
+    required this.recordIdentifier,
   });
 
-  // EPUB 3.0 specific properties
-  String schemaOrg;
-  String accessibilitySummary;
+  List<String> schemaOrgs;
+  List<String> accessibilitySummaries;
+  List<String> accessibilityFeatures;
+  String educationalRole;
+  String typicalAgeRange;
+  String modified;
+  String rendition;
+  String belongsToCollection;
+  String sourceOf;
+  String recordIdentifier;
 }
 
 class Epub3Manifest extends Manifest {
@@ -43,6 +59,5 @@ class Epub3Manifest extends Manifest {
     required this.properties,
   });
 
-  // EPUB 3.0 specific properties
   final String properties;
 }

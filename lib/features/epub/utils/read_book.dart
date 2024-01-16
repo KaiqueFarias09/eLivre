@@ -46,7 +46,7 @@ Future<EpubBook> readBook(final String path) async {
   );
   final navigation = getEpubNavigation(package, archive, rootFilePath);
 
-  final files = extractFiles(archive, package);
+  final files = extractFiles(archive.files, package.manifest.items);
   final cover = getBookCover(package.manifest.items, files.images);
 
   return EpubBook(

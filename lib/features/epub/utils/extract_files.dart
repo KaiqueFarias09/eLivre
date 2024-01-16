@@ -6,7 +6,6 @@ import 'package:collection/collection.dart';
 import 'package:e_livre/features/epub/entities/book/files.dart';
 import 'package:e_livre/features/epub/entities/file/binary_file.dart';
 import 'package:e_livre/features/epub/entities/file/text_file.dart';
-import 'package:e_livre/features/epub/entities/package/epub_2_package.dart';
 import 'package:e_livre/features/epub/entities/package/epub_package.dart';
 import 'package:path/path.dart' as path;
 
@@ -15,31 +14,30 @@ import 'package:path/path.dart' as path;
 /// This function extracts images, CSS files, HTML files, font files, and other files from the provided archive and package.
 /// It uses helper functions to extract each type of file.
 ///
-/// [archive] is the `Archive` from which to extract the files.
-/// [package] is the `EpubPackage` that contains the manifest items to use when extracting the files.
+/// [files] is a list of `ArchiveFile` objects representing the files in the EPUB archive.
+/// [items] is a list of `ManifestItem` objects representing the items in the EPUB package's manifest.
 ///
-/// Returns a `Files` object containing the extracted files.
+/// Returns a `Files` object containing the extracted files. The `Files` object includes separate lists for images, CSS files, HTML files, font files, and other files.
 Files extractFiles(
-  final Archive archive,
-  final EpubPackage package,
+  final List<ArchiveFile> files,
+  final List<ManifestItem> items,
 ) {
   return Files(
-    images: _getImages(archive, package),
-    css: _getCSSFiles(archive, package),
-    html: _getHTMLFiles(archive, package),
-    fonts: _getFontFiles(archive, package),
-    others: _getOtherFiles(archive, package),
+    images: _getImages(files, items),
+    css: _getCSSFiles(files, items),
+    html: _getHTMLFiles(files, items),
+    fonts: _getFontFiles(files, items),
+    others: _getOtherFiles(files, items),
   );
 }
 
 List<BinaryFile> _getImages(
-  final Archive archive,
-  final EpubPackage package,
+  final List<ArchiveFile> files,
+  final List<ManifestItem> items,
 ) {
-  final imageItems = package.manifest.items.where(
-    (final item) => item.mediaType.contains('image/'),
-  );
-  final imageFiles = _getFilesFromItems(archive, imageItems);
+  final imageItems =
+      items.where((final item) => item.mediaType.contains('image/'));
+  final imageFiles = _getFilesFromItems(files, imageItems);
 
   return imageFiles
       .map(
@@ -56,13 +54,13 @@ List<BinaryFile> _getImages(
 }
 
 List<TextFile> _getCSSFiles(
-  final Archive archive,
-  final EpubPackage package,
+  final List<ArchiveFile> files,
+  final List<ManifestItem> package,
 ) {
-  final cssItems = package.manifest.items.where(
+  final cssItems = package.where(
     (final item) => item.mediaType.contains('text/css'),
   );
-  final cssFiles = _getFilesFromItems(archive, cssItems);
+  final cssFiles = _getFilesFromItems(files, cssItems);
 
   return cssFiles.map((final file) {
     return TextFile(
@@ -75,13 +73,13 @@ List<TextFile> _getCSSFiles(
 }
 
 List<TextFile> _getHTMLFiles(
-  final Archive archive,
-  final EpubPackage package,
+  final List<ArchiveFile> files,
+  final List<ManifestItem> items,
 ) {
-  final htmlItems = package.manifest.items.where(
+  final htmlItems = items.where(
     (final item) => item.mediaType.contains('application/xhtml+xml'),
   );
-  final htmlFiles = _getFilesFromItems(archive, htmlItems);
+  final htmlFiles = _getFilesFromItems(files, htmlItems);
 
   return htmlFiles.map((final file) {
     return TextFile(
@@ -94,15 +92,15 @@ List<TextFile> _getHTMLFiles(
 }
 
 List<BinaryFile> _getFontFiles(
-  final Archive archive,
-  final EpubPackage package,
+  final List<ArchiveFile> files,
+  final List<ManifestItem> items,
 ) {
-  final fontItems = package.manifest.items.where(
+  final fontItems = items.where(
     (final item) =>
         item.mediaType.contains('application/font-woff') ||
         item.mediaType.contains('application/vnd.ms-opentype'),
   );
-  final fontFiles = _getFilesFromItems(archive, fontItems);
+  final fontFiles = _getFilesFromItems(files, fontItems);
   return fontFiles.map((final file) {
     return BinaryFile(
       path: file.name,
@@ -114,18 +112,18 @@ List<BinaryFile> _getFontFiles(
 }
 
 List<BinaryFile> _getOtherFiles(
-  final Archive archive,
-  final EpubPackage package,
+  final List<ArchiveFile> files,
+  final List<ManifestItem> items,
 ) {
-  final otherItems = package.manifest.items.where((final item) =>
+  final otherItems = items.where((final item) =>
       !item.mediaType.contains('image/') &&
       !item.mediaType.contains('text/css') &&
       !item.mediaType.contains('application/xhtml+xml') &&
       !item.mediaType.contains('application/font-woff') &&
       !item.mediaType.contains('application/vnd.ms-opentype'));
 
-  final files = _getFilesFromItems(archive, otherItems);
-  return files.map(
+  final otherFiles = _getFilesFromItems(files, otherItems);
+  return otherFiles.map(
     (final file) {
       return BinaryFile(
         path: file.name,
@@ -140,12 +138,12 @@ List<BinaryFile> _getOtherFiles(
 // TODO: Change this to receive a list of archive files
 // instead of the archive itself.
 List<ArchiveFile> _getFilesFromItems(
-  final Archive archive,
+  final List<ArchiveFile> files,
   final Iterable<ManifestItem> items,
 ) {
   final List<ArchiveFile> archiveFiles = [];
   for (final item in items) {
-    final file = archive.files.firstWhereOrNull(
+    final file = files.firstWhereOrNull(
       (final file) => file.name.contains(item.path),
     );
 
