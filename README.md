@@ -15,7 +15,7 @@ To use this package, add `e_livre` as a dependency in your `pubspec.yaml` file.
 
 ```dart
 dependencies:
-  e_livre: ^1.0.1
+  e_livre: ^1.0.2
 ```
 
 Then, run `flutter pub get` in your terminal.

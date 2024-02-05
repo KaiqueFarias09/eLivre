@@ -1,5 +1,5 @@
 name: e_livre
-version: 1.0.1
+version: 1.0.2
 repository: https://github.com/KaiqueFarias09/eLivre
 description: >-
   Provides a simple way to extract information for ebook files 
