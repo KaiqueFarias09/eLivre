@@ -15,5 +15,5 @@ dev_dependencies:
 dependencies:
   archive: ^3.4.10
   collection: ^1.18.0
-  path: any
+  path: ^1.8.0
   xml: ^6.4.2
