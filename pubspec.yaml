@@ -1,5 +1,5 @@
 name: e_livre
-version: 1.0.3
+version: 1.0.4
 repository: https://github.com/KaiqueFarias09/eLivre
 description: >-
   Provides a simple way to extract information for ebook files 
@@ -13,7 +13,7 @@ dev_dependencies:
   test: ^1.16.7
 
 dependencies:
-  archive: ^3.4.10
+  archive: ^3.1.6
   collection: ^1.15.0
-  path: ^1.8.0
-  xml: ^6.4.2
+  path: ^1.8.1
+  xml: ^6.0.1
