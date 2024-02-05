@@ -1,3 +1,7 @@
+## 1.0.3 - February 5, 2024
+
+* Pin collection dependency to `^1.15.0` for better support
+
 ## 1.0.2 - February 5, 2024
 
 * Pin path dependency to `^1.8.0` for better support
