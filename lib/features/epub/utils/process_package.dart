@@ -16,7 +16,7 @@ import 'package:xml/xml.dart';
 ///
 /// Returns a `Navigation` representing the navigation of the EPUB.
 ///
-/// Throws an `Exception` if the TOC ID is empty, the TOC manifest item could not be found, or the TOC file entry could not be found.
+/// Throws an `EpubException` if the TOC ID is empty, the TOC manifest item could not be found, or the TOC file entry could not be found.
 Navigation getEpubNavigation(
   final EpubPackage package,
   final Archive archive,
@@ -26,11 +26,13 @@ Navigation getEpubNavigation(
       ? package.tocId
       : package.spine.tocId;
 
-  if (tocId == null) throw Exception('EPUB parsing error: TOC ID is empty.');
+  if (tocId == null) {
+    throw EpubException('EPUB parsing error: TOC ID is empty.');
+  }
 
   final tocManifestItem = package.manifest.items.firstWhere(
     (final element) => element.id == tocId,
-    orElse: () => throw Exception(
+    orElse: () => throw EpubException(
       'EPUB parsing error: TOC item $tocId not found in EPUB manifest.',
     ),
   );
@@ -43,7 +45,7 @@ Navigation getEpubNavigation(
 
   final tocFileEntry = archive.files.firstWhere(
     (final file) => file.name.toLowerCase() == tocFileEntryPath.toLowerCase(),
-    orElse: () => throw Exception(
+    orElse: () => throw EpubException(
       'EPUB parsing error: TOC file $tocFileEntryPath not found in archive.',
     ),
   );

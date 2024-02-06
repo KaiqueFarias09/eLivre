@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:e_livre/features/epub/entities/book/book.dart';
-import 'package:e_livre/features/epub/utils/read_book.dart';
+import 'package:e_livre/features/epub/exceptions/epub_exception.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -11,22 +11,23 @@ void main() {
       test('should throw exception when path is empty', () async {
         const path = '';
         try {
-          await readBook(path);
-          fail('Exception not thrown');
-        } catch (exception) {
-          expect(exception, isA<Exception>());
-          expect(exception.toString(), 'Exception: Path cannot be empty');
+          await EpubBook.fromFilePath(path);
+          fail('EpubException not thrown');
+        } on EpubException catch (exception) {
+          expect(exception, isA<EpubException>());
+          expect(exception.toString(), 'EpubException: Path cannot be empty');
         }
       });
 
       test('should throw exception when file does not exist', () async {
         const path = '/path/to/nonexistent/file.epub';
         try {
-          await readBook(path);
-          fail('Exception not thrown');
-        } catch (exception) {
-          expect(exception, isA<Exception>());
-          expect(exception.toString(), 'Exception: No such file or directory');
+          await EpubBook.fromFilePath(path);
+          fail('EpubException not thrown');
+        } on EpubException catch (exception) {
+          expect(exception, isA<EpubException>());
+          expect(
+              exception.toString(), 'EpubException: No such file or directory');
         }
       });
 
@@ -40,7 +41,7 @@ void main() {
         test(
           'should succeed',
           () async {
-            final bookEntity = await readBook(book.path);
+            final bookEntity = await EpubBook.fromFilePath(book.path);
             expect(bookEntity, isA<EpubBook>());
           },
         );

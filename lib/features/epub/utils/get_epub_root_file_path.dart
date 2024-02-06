@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'package:archive/archive.dart';
 import 'package:e_livre/features/epub/constants/epub_constants.dart'
     as epub_constants;
+import 'package:e_livre/features/epub/exceptions/epub_exception.dart';
 import 'package:xml/xml.dart';
 
 /// Retrieves the root file path of the EPUB from the provided archive.
@@ -26,7 +27,7 @@ Future<String?> getEpubRootFilePath(final Archive epubArchive) async {
 ArchiveFile _getContainerFileEntry(final Archive epubArchive) {
   return epubArchive.files.firstWhere(
     (final file) => file.name.contains(epub_constants.containerFilepath),
-    orElse: () => throw Exception(
+    orElse: () => throw EpubException(
       'EPUB parsing error: ${epub_constants.containerFilepath} '
       'file not found in archive.',
     ),
@@ -42,7 +43,7 @@ XmlElement _getPackageElement(final XmlDocument containerDocument) {
       .firstOrNull;
 
   if (package == null) {
-    throw Exception('EPUB parsing error: Invalid epub container');
+    throw EpubException('EPUB parsing error: Invalid epub container');
   }
 
   return package;
@@ -52,7 +53,7 @@ String? _getRootFilePath(final XmlElement package) {
   final rootFileElement = package.descendants.firstWhere(
     (final element) =>
         element is XmlElement && 'rootfile' == element.name.local,
-    orElse: () => throw Exception(
+    orElse: () => throw EpubException(
       'EPUB parsing error: rootfile element not found in container file',
     ),
   );

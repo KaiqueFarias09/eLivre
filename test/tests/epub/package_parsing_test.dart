@@ -5,6 +5,7 @@ import 'package:archive/archive.dart';
 import 'package:e_livre/features/epub/entities/entities.dart';
 import 'package:e_livre/features/epub/utils/get_epub_root_file_path.dart';
 import 'package:e_livre/features/epub/utils/parse_epub_package.dart';
+import 'package:e_livre/features/epub/exceptions/epub_exception.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -224,9 +225,9 @@ void _checkCommonMetadataProperties(
 }
 
 ArchiveFile _getRootFile(final Archive archive, final String? rootFilePath) {
-  if (rootFilePath == null) throw Exception('No root file found');
+  if (rootFilePath == null) throw EpubException('No root file found');
   final rootFile = archive.findFile(rootFilePath);
-  return rootFile ?? (throw Exception('No root file found'));
+  return rootFile ?? (throw EpubException('No root file found'));
 }
 
 class _TestBookPackageInfo {

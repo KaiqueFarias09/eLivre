@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:e_livre/features/epub/entities/package/epub_2_package.dart';
 import 'package:e_livre/features/epub/entities/package/epub_3_package.dart';
 import 'package:e_livre/features/epub/entities/package/epub_package.dart';
+import 'package:e_livre/features/epub/exceptions/epub_exception.dart';
 import 'package:xml/xml.dart';
 
 /// Parses the provided XML string into an `EpubPackage`.
@@ -14,7 +15,7 @@ import 'package:xml/xml.dart';
 ///
 /// Returns an `EpubPackage` representing the parsed package.
 ///
-/// Throws an `Exception` if the TOC ID is empty when creating an `Epub3Package`.
+/// Throws an `EpubException` if the TOC ID is empty when creating an `Epub3Package`.
 EpubPackage parsePackage(final String xml) {
   final document = XmlDocument.parse(xml);
   final namespaceUri = document.rootElement.namespaceUri;
@@ -91,7 +92,7 @@ EpubPackage parsePackage(final String xml) {
 
     final tocPath = tocElement?.getAttribute('id') ?? spine.tocId;
     if (tocPath == null) {
-      throw Exception('EPUB parsing package error: TOC ID is empty.');
+      throw EpubException('EPUB parsing package error: TOC ID is empty.');
     }
 
     return Epub3Package(
@@ -108,7 +109,7 @@ EpubPackage parsePackage(final String xml) {
 
 void _validate(final XmlElement? item, final String name) {
   if (item != null) return;
-  throw Exception('EPUB parsing package error: No $name element found.');
+  throw EpubException('EPUB parsing package error: No $name element found.');
 }
 
 // XmlElement getCorrectPackage(final XmlDocument xml) {
@@ -118,7 +119,7 @@ void _validate(final XmlElement? item, final String name) {
 //   packageElements = xml.findAllElements('ns0:package').firstOrNull;
 //   if (packageElements != null) return packageElements;
 
-//   throw Exception('EPUB parsing package error: No package element found.');
+//   throw EpubException('EPUB parsing package error: No package element found.');
 // }
 
 Metadata _parseMetadata(
