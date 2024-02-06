@@ -10,33 +10,68 @@ import 'package:xml/xml.dart';
 /// It then retrieves the version, metadata, manifest, and spine from the package element.
 /// Depending on the version, it either creates an `Epub2Package` or an `Epub3Package` from the retrieved data.
 ///
-/// [xmlString] is the XML string to parse.
+/// [xml] is the XML string to parse.
 ///
 /// Returns an `EpubPackage` representing the parsed package.
 ///
 /// Throws an `Exception` if the TOC ID is empty when creating an `Epub3Package`.
-EpubPackage parsePackage(final String xmlString) {
-  final document = XmlDocument.parse(xmlString);
-  final packageElement = document.findElements('package').first;
+EpubPackage parsePackage(final String xml) {
+  final document = XmlDocument.parse(xml);
+  final namespaceUri = document.rootElement.namespaceUri;
 
-  final version = packageElement.getAttribute('version')!;
-  final metadataElement = packageElement.findElements('metadata').first;
-  final manifestElement = packageElement.findElements('manifest').first;
-  final spineElement = packageElement.findElements('spine').first;
+  final package = document
+      .findElements(
+        'package',
+        namespace: namespaceUri,
+      )
+      .firstOrNull;
+  _validate(package, 'package');
+  final version = package!.getAttribute('version')?.trim() ?? '2.0';
 
-  final uniqueIdentifierProperty =
-      packageElement.getAttribute('unique-identifier')!;
+  final metadataElement = package
+      .findElements(
+        'metadata',
+        namespace: namespaceUri,
+      )
+      .firstOrNull;
+  _validate(metadataElement, 'metadata');
+
+  final manifestElement = package
+      .findElements(
+        'manifest',
+        namespace: namespaceUri,
+      )
+      .firstOrNull;
+  _validate(manifestElement, 'manifest');
+  final spineElement = package
+      .findElements(
+        'spine',
+        namespace: namespaceUri,
+      )
+      .firstOrNull;
+  _validate(spineElement, 'spine');
+
+  final uniqueIdentifierProperty = package.getAttribute(
+        'unique-identifier',
+      ) ??
+      'uuid_id';
+
   final metadata = _parseMetadata(
-    metadataElement,
+    metadataElement!,
     version,
     uniqueIdentifierProperty,
   );
-  final manifestItems = _parseManifestItems(manifestElement);
-  final spine = _parseSpine(spineElement);
+  final manifestItems = _parseManifestItems(manifestElement!, namespaceUri);
+  final spine = _parseSpine(spineElement!);
 
-  final xmlns = packageElement.getAttribute('xmlns')!;
+  final xmlns = package.getAttribute('xmlns');
   if (_isEpub2(version)) {
-    final guideElement = packageElement.findElements('guide').firstOrNull;
+    final guideElement = package
+        .findElements(
+          'guide',
+          namespace: namespaceUri,
+        )
+        .firstOrNull;
     final guide = guideElement != null ? _parseGuide(guideElement) : null;
 
     return Epub2Package(
@@ -70,6 +105,21 @@ EpubPackage parsePackage(final String xmlString) {
     );
   }
 }
+
+void _validate(final XmlElement? item, final String name) {
+  if (item != null) return;
+  throw Exception('EPUB parsing package error: No $name element found.');
+}
+
+// XmlElement getCorrectPackage(final XmlDocument xml) {
+//   XmlElement? packageElements = xml.findElements('package').firstOrNull;
+//   if (packageElements != null) return packageElements;
+
+//   packageElements = xml.findAllElements('ns0:package').firstOrNull;
+//   if (packageElements != null) return packageElements;
+
+//   throw Exception('EPUB parsing package error: No package element found.');
+// }
 
 Metadata _parseMetadata(
   final XmlElement metadataElement,
@@ -240,8 +290,13 @@ Metadata _parseMetadata(
   );
 }
 
-List<ManifestItem> _parseManifestItems(final XmlElement manifestElement) {
-  return manifestElement.findElements('item').map((final itemElement) {
+List<ManifestItem> _parseManifestItems(
+  final XmlElement manifestElement,
+  final String? namespaceUri,
+) {
+  return manifestElement.findElements('item', namespace: namespaceUri).map((
+    final itemElement,
+  ) {
     return ManifestItem(
       path: itemElement.getAttribute('href')!,
       id: itemElement.getAttribute('id')!,
