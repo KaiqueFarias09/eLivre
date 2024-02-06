@@ -3,7 +3,7 @@ include: package:lints/recommended.yaml
 analyzer:
   errors:
     missing_required_param: error
-    missing_return: error 
+    missing_return: error
     unused_element: error
     unused_field: error
     unused_local_variable: error
@@ -12,9 +12,6 @@ analyzer:
     strict-inference: true
     strict-raw-types: true
     strict-casts: true
-  exclude:
-    - test/tests/res/**
-    - test/**
 
 linter:
   rules:
