@@ -22,10 +22,11 @@ Then, run `flutter pub get` in your terminal.
 
 ## Usage
 
-Here's a basic example:
+Here's a basic example app: \
 ![anim](https://github.com/KaiqueFarias09/eLivre/assets/86803230/d8e472c4-3032-4fde-ae2c-dbf43dc70afe)
 
 
+## Example code
 ```dart
 import 'package:e_livre/e_livre.dart';
 import 'package:flutter/material.dart';
