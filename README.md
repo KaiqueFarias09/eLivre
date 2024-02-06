@@ -23,7 +23,7 @@ Then, run `flutter pub get` in your terminal.
 ## Usage
 
 Here's a basic example:
-https://github.com/KaiqueFarias09/eLivre/assets/86803230/4d10d89c-806a-4cec-bb35-74f6561e8aad
+![anim](https://github.com/KaiqueFarias09/eLivre/assets/86803230/d8e472c4-3032-4fde-ae2c-dbf43dc70afe)
 
 
 ```dart
@@ -54,7 +54,8 @@ class App extends StatelessWidget {
     ));
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,![anim](https://github.com/KaiqueFarias09/eLivre/assets/86803230/68bdba7a-5316-4518-8e1b-8efb323f4a91)
+
       home: Scaffold(
         backgroundColor: Colors.grey[900],
         body: FutureBuilder(
