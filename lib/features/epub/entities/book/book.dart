@@ -7,13 +7,13 @@ import 'package:e_livre/features/epub/entities/file/binary_file.dart';
 import 'package:e_livre/features/epub/entities/file/text_file.dart';
 import 'package:e_livre/features/epub/entities/navigation/navigation.dart';
 import 'package:e_livre/features/epub/entities/package/epub_package.dart';
+import 'package:e_livre/features/epub/exceptions/empty_bytes_exception.dart';
+import 'package:e_livre/features/epub/exceptions/epub_exception.dart';
 import 'package:e_livre/features/epub/utils/extract_files.dart';
 import 'package:e_livre/features/epub/utils/get_book_cover.dart';
 import 'package:e_livre/features/epub/utils/get_epub_root_file_path.dart';
 import 'package:e_livre/features/epub/utils/parse_epub_package.dart';
 import 'package:e_livre/features/epub/utils/process_package.dart';
-import 'package:e_livre/features/epub/exceptions/empty_bytes_exception.dart';
-import 'package:e_livre/features/epub/exceptions/epub_exception.dart';
 import 'package:path/path.dart' as path;
 
 class EpubBook {
@@ -52,7 +52,6 @@ class EpubBook {
   String? get creator => package.metadata.creator;
   String get language => package.metadata.language;
   String? get publisher => package.metadata.publisher;
-  String get date => package.metadata.date;
   String get uid => package.metadata.uniqueIdentifierValue;
   String get version => package.version;
   List<TextFile> get content => files.html;

@@ -15,23 +15,8 @@ To use this package, add `e_livre` as a dependency in your `pubspec.yaml` file.
 
 ```dart
 dependencies:
-  e_livre: ^1.0.4
+  e_livre: ^2.0.0
 ```
 
 Then, run `flutter pub get` in your terminal.
 
-## Usage
-
-Here's a basic example of how to use the package:
-
-```dart
-import 'package:e_livre/e_livre.dart' as livre;
-
-void main() async {
-  final book = await livre.readBook('test/resources/epub/linear-algebra.epub');
-
-  print(book.package.metadata.title);
-  print(book.package.metadata.creator);
-  print(book.package.metadata.language);
-}
-```

@@ -1,3 +1,9 @@
+## 2.0.0 - February 6, 2024
+
+-  Move readBook functionality to EpubBook class
+-  Now is possible to create a EpubBook from bytes, file or path
+-  Add getters for title, creator, publisher, language, uid, version, content and images
+
 ## 1.0.4 - February 5, 2024
 
 -   Pin archive dependency to `^3.1.6` for better support
