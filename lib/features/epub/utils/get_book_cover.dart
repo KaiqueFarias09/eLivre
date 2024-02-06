@@ -16,10 +16,8 @@ BinaryFile getBookCover(
   final List<ManifestItem> manifestItems,
   final List<BinaryFile> images,
 ) {
-  final ManifestItem? coverItem = manifestItems.firstWhereOrNull(
-    (final item) {
-      return item.properties == 'cover-image' || item.id.contains('cover');
-    },
+  final coverItem = manifestItems.firstWhereOrNull(
+    (final item) => item.id.contains('cover'),
   );
 
   return coverItem == null

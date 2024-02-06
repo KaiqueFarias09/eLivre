@@ -40,7 +40,7 @@ void main() {
         test(
           'should succeed',
           () async {
-            final EpubBook bookEntity = await readBook(book.path);
+            final bookEntity = await readBook(book.path);
             expect(bookEntity, isA<EpubBook>());
           },
         );
