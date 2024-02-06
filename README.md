@@ -22,7 +22,9 @@ Then, run `flutter pub get` in your terminal.
 
 ## Usage
 
-Here's a basic example of how to use the package:
+Here's a basic example:
+https://github.com/KaiqueFarias09/eLivre/assets/86803230/4d10d89c-806a-4cec-bb35-74f6561e8aad
+
 
 ```dart
 import 'package:e_livre/e_livre.dart';
@@ -198,3 +200,6 @@ class Reader extends StatelessWidget {
   }
 }
 ```
+
+
+
